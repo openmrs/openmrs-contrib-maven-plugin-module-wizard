@@ -9,9 +9,9 @@
     <description>A Plugin to execute Archetypes as a Wizard</description>
     
     <scm>
-	<connection>scm:svn:http://svn.openmrs.org/openmrs-contrib/maven/archetypes/openmrs-archetype-basicmodule-creation/trunk/</connection>
-	<developerConnection>scm:svn:http://svn.openmrs.org/openmrs-contrib/maven/archetypes/openmrs-archetype-basicmodule-creation/trunk/</developerConnection>
-	<url>http://svn.openmrs.org/openmrs-contrib/maven/archetypes/openmrs-archetype-basicmodule-creation/trunk/</url>
+	<connection>scm:svn:http://svn.openmrs.org/openmrs-contrib/maven/plugins/module-wizard-plugin/trunk/</connection>
+	<developerConnection>scm:svn:http://svn.openmrs.org/openmrs-contrib/maven/plugins/module-wizard-plugin/trunk/</developerConnection>
+	<url>http://svn.openmrs.org/openmrs-contrib/maven/plugins/module-wizard-plugin/trunk/</url>
   	</scm>
     
     <properties>
