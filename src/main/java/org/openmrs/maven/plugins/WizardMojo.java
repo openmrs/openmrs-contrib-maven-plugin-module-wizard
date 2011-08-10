@@ -252,7 +252,7 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 
 
     /**
-     * The generated project's dependent modules.
+     * The generated project's dependent modules condition.
      *
      * @parameter  expression="${dependentModules}" default-value="empty"  
      */
@@ -406,7 +406,7 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
         
     }
     
-    /*
+    /**
      * Removes spaces from the WizardMojo fields.
      * Mainly used for setting fields whose values are used for naming files in archetypes. 
      */
