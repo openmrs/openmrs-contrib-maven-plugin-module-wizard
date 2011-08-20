@@ -232,21 +232,21 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
     /**
      * The generated project's admin link condition.
      *
-     * @parameter  expression="${adminLinkReply} default-value="n"
+     * @parameter  expression="${adminLinkReply}" default-value="n"
      */
     private String adminLinkReply;
     
     /**
      * The generated project's SpringMvc page condition.
      *
-     * @parameter expression="${springMvcReply}  default-value="n"
+     * @parameter expression="${springMvcReply}"  default-value="n"
      */
     private String springMvcReply;
     
     /**
      * The generated project's service/dao/hibernate condition.
      *
-     * @parameter expression="${serviceReply}  default-value="n"
+     * @parameter expression="${serviceReply}"  default-value="n"
      */
     private String serviceReply;
 
