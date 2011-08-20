@@ -232,21 +232,21 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
     /**
      * The generated project's admin link condition.
      *
-     * @parameter  default-value="n"
+     * @parameter  expression="${adminLinkReply} default-value="n"
      */
     private String adminLinkReply;
     
     /**
      * The generated project's SpringMvc page condition.
      *
-     * @parameter  default-value="n"
+     * @parameter expression="${springMvcReply}  default-value="n"
      */
     private String springMvcReply;
     
     /**
      * The generated project's service/dao/hibernate condition.
      *
-     * @parameter  default-value="n"
+     * @parameter expression="${serviceReply}  default-value="n"
      */
     private String serviceReply;
 
@@ -261,6 +261,9 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
       
     public void execute() throws MojoExecutionException, MojoFailureException{
     
+    	
+    	if( Boolean.TRUE.equals( interactiveMode ) ) {
+            
     	try{
     		
     		
@@ -319,6 +322,8 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 	   		throw new MojoExecutionException("Failed to prompt for wizard questions :", e);
 		}
     	
+    	}
+    	
     	packageName="org.openmrs.module."+artifactId;
     	moduleNameNoSpaces.toLowerCase();
     	
@@ -375,31 +380,24 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
         setPrivateField( "generator", generator );
         setPrivateField( "invoker", invoker );
         
-        List<String> archetypeIds = new ArrayList<String>();
-        
-        if( Boolean.TRUE.equals( interactiveMode ) ) {
-            
-            archetypeIds.add( "openmrs-archetype-basicmodule-creation" );
+        List<String> archetypeIds = new ArrayList<String>();        
+           
+        archetypeIds.add( "openmrs-archetype-basicmodule-creation" );
 
-            if( "y".equalsIgnoreCase(adminLinkReply)) {
-                archetypeIds.add( "openmrs-archetype-adminpagelink-creation" );
-                
-            }  
-            if ( "y".equalsIgnoreCase(springMvcReply) ) { 
-                archetypeIds.add( "openmrs-archetype-springmvc-creation" );
-                
-            } 
-            if ( "y".equalsIgnoreCase(serviceReply) ) { 
+        if( "y".equalsIgnoreCase(adminLinkReply)) {
+                archetypeIds.add( "openmrs-archetype-adminpagelink-creation" );                
+        }  
+        if ( "y".equalsIgnoreCase(springMvcReply) ) { 
+                archetypeIds.add( "openmrs-archetype-springmvc-creation" );                
+        } 
+        if ( "y".equalsIgnoreCase(serviceReply) ) { 
                 archetypeIds.add( "openmrs-archetype-service-dao-hibernate-creation" );
-            }
-                    
         }
+                    
         
         for( String archetypeId : archetypeIds ) {
             getLog().info("Archetype: " + archetypeId);
-            
             setPrivateField( "archetypeArtifactId", archetypeId );
-            
             // Execute creating archetype for each archetype id
             super.execute();
         }       
