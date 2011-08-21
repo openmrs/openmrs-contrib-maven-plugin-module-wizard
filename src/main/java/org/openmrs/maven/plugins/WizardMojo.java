@@ -261,6 +261,8 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
       
     public void execute() throws MojoExecutionException, MojoFailureException{
     
+        if( Boolean.TRUE.equals( interactiveMode ) ) {
+    	       
     	try{
     		
     		
@@ -318,6 +320,7 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
     	} catch (Exception e) {
 	   		throw new MojoExecutionException("Failed to prompt for wizard questions :", e);
 		}
+        }
     	
     	packageName="org.openmrs.module."+artifactId;
     	moduleNameNoSpaces.toLowerCase();
@@ -377,7 +380,6 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
         
         List<String> archetypeIds = new ArrayList<String>();
         
-        if( Boolean.TRUE.equals( interactiveMode ) ) {
             
             archetypeIds.add( "openmrs-archetype-basicmodule-creation" );
 
@@ -393,7 +395,7 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
                 archetypeIds.add( "openmrs-archetype-service-dao-hibernate-creation" );
             }
                     
-        }
+        
         
         for( String archetypeId : archetypeIds ) {
             getLog().info("Archetype: " + archetypeId);
