@@ -1,25 +1,23 @@
 package org.openmrs.maven.plugins;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.execution.MavenSession;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.archetype.ArchetypeManager;
-import org.apache.maven.archetype.ui.ArchetypeSelector;
-import org.apache.maven.archetype.ui.ArchetypeGenerationConfigurator;
-import org.apache.maven.archetype.generator.ArchetypeGenerator;
-import org.apache.maven.shared.invoker.Invoker;
-
-import org.codehaus.plexus.components.interactivity.Prompter;
-import org.apache.maven.archetype.mojos.CreateProjectFromArchetypeMojo;
-
 import java.io.File;
-import java.util.List;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
-
+import java.util.List;
 import java.util.Properties;
 import java.util.regex.Pattern;
-import java.lang.reflect.Field;
+
+import org.apache.maven.archetype.ArchetypeManager;
+import org.apache.maven.archetype.generator.ArchetypeGenerator;
+import org.apache.maven.archetype.mojos.CreateProjectFromArchetypeMojo;
+import org.apache.maven.archetype.ui.ArchetypeGenerationConfigurator;
+import org.apache.maven.archetype.ui.ArchetypeSelector;
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.execution.MavenSession;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.shared.invoker.Invoker;
+import org.codehaus.plexus.components.interactivity.Prompter;
 
 /**
  * Prompts and executes archetypes. Such as a complete archetype followed by partial archetypes.
@@ -74,7 +72,7 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 	/**
 	 * The archetype's version.
 	 * 
-	 * @parameter expression="${archetypeVersion}" default-value="1.0.1"
+	 * @parameter expression="${archetypeVersion}" default-value="1.1"
 	 */
 	private String archetypeVersion;
 	
@@ -180,7 +178,7 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 	 * The generated project's module description.
 	 * 
 	 * @parameter expression="${moduleDescription}"
-	 *            default-value="Allows to learn writing modules for OpenMRS"
+	 *            default-value="Helps to start writing OpenMRS modules"
 	 */
 	private String moduleDescription;
 	
@@ -216,14 +214,14 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 	/**
 	 * The generated project's admin link condition.
 	 * 
-	 * @parameter expression="${adminLinkReply}" default-value="n"
+	 * @parameter expression="${adminLinkReply}" default-value="y"
 	 */
 	private String adminLinkReply;
 	
 	/**
 	 * The generated project's service/dao/hibernate condition.
 	 * 
-	 * @parameter expression="${serviceReply}" default-value="n"
+	 * @parameter expression="${serviceReply}" default-value="y"
 	 */
 	private String serviceReply;
 	
@@ -233,6 +231,13 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 	 * @parameter expression="${dependentModules}" default-value="[none]"
 	 */
 	private String dependentModules;
+	
+	/**
+	 * The generated project's dependent modules condition.
+	 * 
+	 * @parameter expression="${dependentModulesReply}" default-value="n"
+	 */
+	private String dependentModulesReply;
 	
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		
@@ -251,37 +256,33 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 					/*wizard questions*/
 					
 					//general parameters	
-					groupId = prompter.prompt("Group Id:", groupId);
-					artifactId = prompter.prompt("Artifact Id:", artifactId);
-					version = prompter.prompt("Version:", version);
-					moduleName = prompter.prompt("Module Name:", moduleName);
-					moduleDescription = prompter.prompt("Module Description:", moduleDescription);
-					moduleAuthor = prompter.prompt("Module Author:", moduleAuthor);
-					openmrsVersion = prompter.prompt("OpenMRS Version Depended on:", openmrsVersion);
+					groupId = prompter.prompt("Group ID: ", groupId);
+					artifactId = prompter.prompt("Artifact ID: ", artifactId);
+					version = prompter.prompt("Version: ", version);
+					moduleName = prompter.prompt("Module name: ", moduleName);
+					moduleDescription = prompter.prompt("Module description: ", moduleDescription);
+					moduleAuthor = prompter.prompt("Module author: ", moduleAuthor);
+					openmrsVersion = prompter.prompt("OpenMRS version to depend on: ", openmrsVersion);
 					
 					//archetype selection questions and parameters based on reply of archetype selective questions
-					adminLinkReply = prompter.prompt("Do you want admin page link :  (Y/N) ", adminLinkReply);
+					adminLinkReply = prompter.prompt("Do you want to add an admin page link: (y/n) ", adminLinkReply);
 					
-					serviceReply = prompter.prompt("Do you want service/serviceimpl/dao/hibernatedao mapping :  (Y/N) ",
-					    serviceReply);
+					serviceReply = prompter.prompt("Do you want to add a service layer: (y/n) ", serviceReply);
 					if ("y".equalsIgnoreCase(serviceReply)) {
-						serviceDaoName = prompter.prompt("Service Name:", serviceDaoName);
-						objectName = prompter.prompt("Object Name:", objectName);
+						serviceDaoName = prompter.prompt("Service name: ", serviceDaoName);
+						objectName = prompter.prompt("Model object name: ", objectName);
 					}
 					
-					if (prompter.prompt("Does this module depend on another module: (Y/N)").equalsIgnoreCase("y")) {
-						dependentModules = "";
-						dependentModules += prompter.prompt("Module Id :") + ':';
-						dependentModules += prompter.prompt("Module version :") + ',';
-						while (prompter.prompt("Does this module depend on another module: (Y/N)").equalsIgnoreCase("y")) {
-							dependentModules += prompter.prompt("Module Id :") + ':';
-							dependentModules += prompter.prompt("Module version :") + ',';
+					while (prompter.prompt("Do you want to add another module to depend on: (y/n) ", dependentModulesReply).equalsIgnoreCase("y")) {
+						dependentModulesReply = "y";
+						if (dependentModules.equals("[none]")) {
+							dependentModules = "";
 						}
-					} else {
-						dependentModules = "empty";
+						dependentModules += prompter.prompt("Module ID: ") + ':';
+						dependentModules += prompter.prompt("Module version: ") + ',';
 					}
 					
-					confirm = prompter.prompt("Ready to create module. Are the above values correct? (Y/N)");
+					confirm = prompter.prompt("Ready to create a module. Are the above values correct: (y/n) ");
 				}
 				
 			}
