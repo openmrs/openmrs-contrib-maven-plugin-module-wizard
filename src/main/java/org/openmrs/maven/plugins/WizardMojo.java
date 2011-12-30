@@ -200,13 +200,6 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 	private String openmrsVersion;
 	
 	/**
-	 * The generated project's admin page link.
-	 * 
-	 * @parameter expression="${adminPageLink}" default-value="Manage Basic Example"
-	 */
-	private String adminPageLink;
-	
-	/**
 	 * The generated project's object name
 	 * 
 	 * @parameter expression="${serviceDaoName}" default-value="BasicExample"
@@ -226,13 +219,6 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 	 * @parameter expression="${adminLinkReply}" default-value="n"
 	 */
 	private String adminLinkReply;
-	
-	/**
-	 * The generated project's SpringMvc page condition.
-	 * 
-	 * @parameter expression="${springMVCReply}" default-value="n"
-	 */
-	private String springMVCReply;
 	
 	/**
 	 * The generated project's service/dao/hibernate condition.
@@ -275,10 +261,6 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 					
 					//archetype selection questions and parameters based on reply of archetype selective questions
 					adminLinkReply = prompter.prompt("Do you want admin page link :  (Y/N) ", adminLinkReply);
-					if ("y".equalsIgnoreCase(adminLinkReply))
-						adminPageLink = prompter.prompt("Link Name:", adminPageLink);
-					
-					springMVCReply = prompter.prompt("Do you want Spring driven Mvc page :  (Y/N) ", springMVCReply);
 					
 					serviceReply = prompter.prompt("Do you want service/serviceimpl/dao/hibernatedao mapping :  (Y/N) ",
 					    serviceReply);
@@ -334,11 +316,9 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 		properties.setProperty("module-author", moduleAuthor);
 		properties.setProperty("openmrs-version", openmrsVersion);
 		properties.setProperty("service-dao-name-no-spaces", serviceDaoName);
-		properties.setProperty("admin-page-link", adminPageLink);
 		properties.setProperty("object-name-no-spaces", objectName);
 		properties.setProperty("package", packageName);
 		properties.setProperty("adminLinkReply", adminLinkReply);
-		properties.setProperty("springMVCReply", springMVCReply);
 		properties.setProperty("serviceReply", serviceReply);
 		properties.setProperty("dependentModules", dependentModules);
 		properties.setProperty("dependencyManagement", Pattern.matches("^1\\.[5-7].+", openmrsVersion) ? "y" : "n");
@@ -368,9 +348,6 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 		
 		if ("y".equalsIgnoreCase(adminLinkReply)) {
 			archetypeIds.add("openmrs-archetype-adminpagelink-creation");
-		}
-		if ("y".equalsIgnoreCase(springMVCReply)) {
-			archetypeIds.add("openmrs-archetype-springmvc-creation");
 		}
 		if ("y".equalsIgnoreCase(serviceReply)) {
 			archetypeIds.add("openmrs-archetype-service-dao-hibernate-creation");
