@@ -278,6 +278,9 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 					
 					serviceReply = prompter.prompt("Do you want to add a service layer: (y/n) ", serviceReply);
 					if ("y".equalsIgnoreCase(serviceReply)) {
+						serviceDaoName = moduleName;
+						objectName = moduleName;
+						
 						serviceDaoName = prompter.prompt("Service name: ", serviceDaoName);
 						objectName = prompter.prompt("Model object name: ", objectName);
 					}
