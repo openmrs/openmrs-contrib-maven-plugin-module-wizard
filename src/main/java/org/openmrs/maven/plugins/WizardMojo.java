@@ -226,7 +226,7 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 	private String serviceReply;
 	
 	/**
-	 * The generated project's dependent modules condition.
+	 * The generated project's dependent modules list.
 	 * 
 	 * @parameter expression="${dependentModules}" default-value="[none]"
 	 */
@@ -238,6 +238,13 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 	 * @parameter expression="${dependentModulesReply}" default-value="n"
 	 */
 	private String dependentModulesReply;
+	
+	/**
+	 * The generated project's dependencyManagement condition.
+	 * 
+	 * @parameter expression="${dependencyManagement}" default-value="y"
+	 */
+	private String dependencyManagement;
 	
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		
@@ -256,13 +263,15 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 					/*wizard questions*/
 					
 					//general parameters	
-					groupId = prompter.prompt("Group ID: ", groupId);
-					artifactId = prompter.prompt("Artifact ID: ", artifactId);
-					version = prompter.prompt("Version: ", version);
-					moduleName = prompter.prompt("Module name: ", moduleName);
-					moduleDescription = prompter.prompt("Module description: ", moduleDescription);
-					moduleAuthor = prompter.prompt("Module author: ", moduleAuthor);
-					openmrsVersion = prompter.prompt("OpenMRS version to depend on: ", openmrsVersion);
+					groupId = prompter.prompt("Group ID: ", groupId).trim();
+					artifactId = prompter.prompt("Artifact ID: ", artifactId).trim();
+					version = prompter.prompt("Version: ", version).trim();
+					moduleName = prompter.prompt("Module name: ", moduleName).trim();
+					moduleDescription = prompter.prompt("Module description: ", moduleDescription).trim();
+					moduleAuthor = prompter.prompt("Module author: ", moduleAuthor).trim();
+					
+					openmrsVersion = prompter.prompt("OpenMRS version to depend on: ", openmrsVersion).trim();
+					dependencyManagement = Pattern.matches("^1\\.[5-7].*", openmrsVersion) ? "y" : "n";
 					
 					//archetype selection questions and parameters based on reply of archetype selective questions
 					adminLinkReply = prompter.prompt("Do you want to add an admin page link: (y/n) ", adminLinkReply);
@@ -278,7 +287,7 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 						if (dependentModules.equals("[none]")) {
 							dependentModules = "";
 						}
-						dependentModules += prompter.prompt("Module ID: ") + ':';
+						dependentModules += prompter.prompt("Module ID: ").replace("org.openmrs.module.", "") + ':';
 						dependentModules += prompter.prompt("Module version: ") + ',';
 					}
 					
@@ -322,7 +331,7 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 		properties.setProperty("adminLinkReply", adminLinkReply);
 		properties.setProperty("serviceReply", serviceReply);
 		properties.setProperty("dependentModules", dependentModules);
-		properties.setProperty("dependencyManagement", Pattern.matches("^1\\.[5-7].+", openmrsVersion) ? "y" : "n");
+		properties.setProperty("dependencyManagement", dependencyManagement);
 		session.getExecutionProperties().putAll(properties);
 		
 		// Using custom prompts, avoid archetype plugin interaction
