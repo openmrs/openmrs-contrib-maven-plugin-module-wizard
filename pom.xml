@@ -9,9 +9,9 @@
     <description>A Plugin to execute Archetypes as a Wizard</description>
     
     <scm>
-	<connection>scm:svn:http://svn.openmrs.org/openmrs-contrib/maven/plugins/module-wizard-plugin/tags/1.1.0/</connection>
-	<developerConnection>scm:svn:http://svn.openmrs.org/openmrs-contrib/maven/plugins/module-wizard-plugin/tags/1.1.0/</developerConnection>
-	<url>http://svn.openmrs.org/openmrs-contrib/maven/plugins/module-wizard-plugin/tags/1.1.0/</url>
+	<connection>scm:svn:http://svn.openmrs.org/openmrs-contrib/maven/plugins/module-wizard-plugin/tags/1.1.0</connection>
+	<developerConnection>scm:svn:http://svn.openmrs.org/openmrs-contrib/maven/plugins/module-wizard-plugin/tags/1.1.0</developerConnection>
+	<url>http://svn.openmrs.org/openmrs-contrib/maven/plugins/module-wizard-plugin/tags/1.1.0</url>
   	</scm>
     
     <properties>
