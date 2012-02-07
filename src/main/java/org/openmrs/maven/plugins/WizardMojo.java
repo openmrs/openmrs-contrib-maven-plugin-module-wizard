@@ -72,7 +72,7 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 	/**
 	 * The archetype's version.
 	 * 
-	 * @parameter expression="${archetypeVersion}" default-value="1.1"
+	 * @parameter expression="${archetypeVersion}" default-value="1.1.1"
 	 */
 	private String archetypeVersion;
 	
