@@ -318,6 +318,9 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 		
 		moduleName = moduleName + " Module";
 		
+		String serviceDaoBeanId = Character.toLowerCase(serviceDaoName.charAt(0)) 
+				+ (serviceDaoName.length() > 1 ? serviceDaoName.substring(1) : "");		
+		
 		//Adding properties to maven session so that they are available for archetype-mechanism
 		Properties properties = new Properties();
 		properties.setProperty("artifactId", artifactId);
@@ -329,6 +332,7 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 		properties.setProperty("module-author", moduleAuthor);
 		properties.setProperty("openmrs-version", openmrsVersion);
 		properties.setProperty("service-dao-name-no-spaces", serviceDaoName);
+		properties.setProperty("service-dao-bean-id", serviceDaoBeanId);
 		properties.setProperty("object-name-no-spaces", objectName);
 		properties.setProperty("package", packageName);
 		properties.setProperty("adminLinkReply", adminLinkReply);
