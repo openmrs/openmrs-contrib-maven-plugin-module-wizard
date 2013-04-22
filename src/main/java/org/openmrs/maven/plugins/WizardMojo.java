@@ -246,6 +246,15 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 	 */
 	private String dependencyManagement;
 	
+	/**
+	 * The generated project's moduleActivatorManagement condition.
+	 * Depending on this property module activator will
+	 * implement Activator interface or extend BaseModuleActivator abstract class
+	 * 
+	 * @parameter expression="${moduleActivatorManagement}" default-value="y"
+	 */
+	private String moduleActivatorManagement;
+	
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		
 		if (Boolean.TRUE.equals(interactiveMode)) {
@@ -271,7 +280,8 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 					moduleAuthor = prompter.prompt("Module author: ", moduleAuthor).trim();
 					
 					openmrsVersion = prompter.prompt("OpenMRS version to depend on: ", openmrsVersion).trim();
-					dependencyManagement = Pattern.matches("^1\\.[5-7].*", openmrsVersion) ? "y" : "n";
+					dependencyManagement = Pattern.matches("^1\\.[6-7].*", openmrsVersion) ? "y" : "n";
+					moduleActivatorManagement = Pattern.matches("^1.6.*", openmrsVersion) ? "y" : "n";
 					
 					//archetype selection questions and parameters based on reply of archetype selective questions
 					adminLinkReply = prompter.prompt("Do you want to add an admin page link: (y/n) ", adminLinkReply);
@@ -339,6 +349,7 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 		properties.setProperty("serviceReply", serviceReply);
 		properties.setProperty("dependentModules", dependentModules);
 		properties.setProperty("dependencyManagement", dependencyManagement);
+		properties.setProperty("moduleActivatorManagement", moduleActivatorManagement);
 		session.getExecutionProperties().putAll(properties);
 		
 		// Using custom prompts, avoid archetype plugin interaction
