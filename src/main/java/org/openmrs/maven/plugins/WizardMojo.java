@@ -247,7 +247,8 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 	private String dependencyManagement;
 	
 	/**
-	 * The generated project's dependencyManagement condition.
+	 * The generated project's moduleActivatorManagement condition.
+	 * Determine implementing Activator interface or extending BaseModuleActivator absract class
 	 * 
 	 * @parameter expression="${dependencyManagement}" default-value="y"
 	 */
