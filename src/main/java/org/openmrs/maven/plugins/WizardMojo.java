@@ -304,7 +304,10 @@ public class WizardMojo extends CreateProjectFromArchetypeMojo {
 						dependentModules += prompter.prompt("Module version: ") + ',';
 					}
 					
-					confirm = prompter.prompt("Ready to create a module. Are the above values correct: (y/n) ");
+					confirm = "";
+					while (!"y".equalsIgnoreCase(confirm) && !"n".equalsIgnoreCase(confirm)) {
+						confirm = prompter.prompt("Ready to create a module. Are the above values correct: (y/n) ");
+					}
 				}
 				
 			}
